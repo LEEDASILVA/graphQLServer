@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/LEEDASILVA/graphQLServer/go/internal/pkg/jwt"
 	"github.com/LEEDASILVA/graphQLServer/go/internal/users"
-	"github.com/LEEDASILVA/graphQLServer/go/pkg/jwt"
 )
 
 var userCtxKey = &contextKey{"user"}

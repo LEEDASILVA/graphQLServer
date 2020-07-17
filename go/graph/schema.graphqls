@@ -40,6 +40,6 @@ input Login {
 type Mutation {
   createUser(input: NewUser!): String!
   createLink(input: NewLink!): Link!
-  login(input: Login!): String
+  login(input: Login!): String!
   refreshToke(input: RefreshTokenInput!): String!
 }

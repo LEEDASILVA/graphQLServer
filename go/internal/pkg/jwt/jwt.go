@@ -11,7 +11,7 @@ var SecretKey = []byte("secret")
 
 // GenerateToken generates a jwt token and assign a username to it's claims and return it
 func GenerateToken(username string) (string, error) {
-	token := jwt.New(jwt.SigningMethidHS256)
+	token := jwt.New(jwt.SigningMethodHS256)
 
 	// store the claims
 	claims := token.Claims.(jwt.MapClaims)
@@ -32,6 +32,9 @@ func ParseToken(tokenStr string) (string, error) {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		return SecretKey, nil
 	})
+	if err != nil {
+		log.Panic(err)
+	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		username := claims["username"].(string)
 		return username, nil

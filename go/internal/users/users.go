@@ -41,11 +41,11 @@ func CheckPasswordHash(password, hash string) bool {
 
 // GetUserIdByUsername check if a user exists in database by given username
 func GetUserIdByUsername(username string) (int, error) {
-	statement, err := db.DB.Prepare("select ID from Users WHERE Username = ?")
+	stmt, err := db.DB.Prepare("select ID from Users WHERE Username = ?")
 	if err != nil {
 		log.Fatal(err)
 	}
-	row := statement.QueryRow(username)
+	row := stmt.QueryRow(username)
 
 	var Id int
 	err = row.Scan(&Id)
@@ -57,4 +57,23 @@ func GetUserIdByUsername(username string) (int, error) {
 	}
 
 	return Id, nil
+}
+
+func (user *User) Authenticate() bool {
+	stmt, err := db.DB.Prepare("SELECT Password FROM Users WHERE Username = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	row := stmt.QueryRow(user.Username)
+
+	var hashedPassword string
+	err = row.Scan(&hashedPassword)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return false
+		} else {
+			log.Fatal(err)
+		}
+	}
+	return CheckPasswordHash(user.Password, hashedPassword)
 }

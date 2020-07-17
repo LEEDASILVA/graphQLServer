@@ -12,7 +12,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/LEEDASILVA/grapQLServer/go/graph/model"
+	"github.com/LEEDASILVA/graphQLServer/go/graph/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -70,7 +70,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateUser(ctx context.Context, input model.NewUser) (string, error)
 	CreateLink(ctx context.Context, input model.NewLink) (*model.Link, error)
-	Login(ctx context.Context, input model.Login) (*string, error)
+	Login(ctx context.Context, input model.Login) (string, error)
 	RefreshToke(ctx context.Context, input model.RefreshTokenInput) (string, error)
 }
 type QueryResolver interface {
@@ -295,7 +295,7 @@ input Login {
 type Mutation {
   createUser(input: NewUser!): String!
   createLink(input: NewLink!): Link!
-  login(input: Login!): String
+  login(input: Login!): String!
   refreshToke(input: RefreshTokenInput!): String!
 }
 `, BuiltIn: false},
