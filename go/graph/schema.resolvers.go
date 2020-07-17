@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/LEEDASILVA/grapQLServer/go/graph/generated"
-	"github.com/LEEDASILVA/grapQLServer/go/graph/model"
-	"github.com/LEEDASILVA/grapQLServer/go/internal/links"
+	"github.com/LEEDASILVA/graphQLServer/go/graph/generated"
+	"github.com/LEEDASILVA/graphQLServer/go/graph/model"
+	"github.com/LEEDASILVA/graphQLServer/go/internal/links"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (string, error) {

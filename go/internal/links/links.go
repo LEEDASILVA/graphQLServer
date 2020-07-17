@@ -4,7 +4,7 @@ import (
 	"log"
 	"os/user"
 
-	db "github.com/LEEDASILVA/grapQLServer/go/internal/pkg/db/mysql"
+	db "github.com/LEEDASILVA/graphQLServer/go/internal/pkg/db/mysql"
 )
 
 type Link struct {
