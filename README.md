@@ -263,3 +263,59 @@ so with this we can see that at the moment we can just use the persons and the p
 1 - GraphQL server with a connected database
 
 2 - GraphQL server to integrate existing system
+
+3 - a hybrid approach with a connected database and integration of existing system
+
+### GraphQL server with a connected database
+
+- often used for greenfield projects, a single webserver that implements the graphQL implementation
+
+- uses single web server that implements graphQL
+
+- server resolves queries and constructs response with data that it fetches from the database
+
+#### **resolver function**
+
+- graphQL queries/mutations consist of set of fields
+
+- graphQL server has one resolver function per field
+
+```js
+query {
+    User(id: "asd3rda") {
+        name
+        friends(first: 5) {
+            name
+            age
+        }
+    }
+}
+```
+
+query a user with the id `asd3rda` and respond with the name and the first 5 friends of that user
+
+Resolver function for this user case
+
+```js
+User(id: String!): User
+name(user: User!): String!
+age(user: User!): Int!
+friends(first: Int!, user: User!): [User!]!
+```
+
+### GraphQL Clients
+
+**data fetching**
+
+- construct and send HTTP request (ex: fetch js)
+
+- receive and parse server response
+
+- store data locally
+
+- display the data in the UI
+
+
+
+
+
