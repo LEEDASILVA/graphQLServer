@@ -20,9 +20,9 @@ func main() {
 		port = defaultPort
 	}
 
-	// initialise the DB adn the migrations
+	// initialise the DB and migrate
 	db.InitDB()
-	db.Migration()
+	db.Migrate()
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 

@@ -19,8 +19,8 @@ func checkError(err error) {
 }
 
 // connection to the data base
-func InitDb() {
-	db, err := sql.Open("mysql", "root:dbpass@(172.17.0.2:3306)/hackernews")
+func InitDB() {
+	db, err := sql.Open("mysql", "root:mysqlpass@(172.17.0.2:3306)/hackernews")
 	checkError(err)
 	if err = db.Ping(); err != nil {
 		log.Panic(err)

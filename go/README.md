@@ -60,3 +60,9 @@ apply the migrations
 ```console
 $ migrate -database mysql://root:****@(172.17.0.2:3306)/hackernews -path internal/pkg/db/migrations/mysql up
 ```
+
+# JWT
+
+JWT or Json Web Token is a string containing a hash that helps us verify who is using application. Every token is constructed of 3 parts like xxxxx.yyyyy.zzzzz and name of these parts are: Header, Payload and Signature.
+
+you can see more about it [here](https://jwt.io/introduction/)

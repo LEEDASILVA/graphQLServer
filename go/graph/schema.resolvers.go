@@ -10,6 +10,7 @@ import (
 
 	"github.com/LEEDASILVA/grapQLServer/go/graph/generated"
 	"github.com/LEEDASILVA/grapQLServer/go/graph/model"
+	"github.com/LEEDASILVA/grapQLServer/go/internal/links"
 )
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (string, error) {
@@ -17,11 +18,12 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 }
 
 func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) (*model.Link, error) {
-	var link model.Link
+	var link links.Link
 	link.Title = input.Title
 	link.Address = input.Address
 	linkID := link.Save()
 	return &model.Link{ID: strconv.FormatInt(linkID, 10), Title: link.Title, Address: link.Address}, nil
+	// return &link, nil
 }
 
 func (r *mutationResolver) Login(ctx context.Context, input model.Login) (*string, error) {
@@ -33,9 +35,13 @@ func (r *mutationResolver) RefreshToke(ctx context.Context, input model.RefreshT
 }
 
 func (r *queryResolver) Link(ctx context.Context) ([]*model.Link, error) {
-	var links []*model.Link
-	links = append(links, &model.Link{Title: "dummy", Address: "https://address.org", User: &model.User{Name: "admin"}})
-	return links, nil
+	var resultLinks []*model.Link
+	var dbLinks []links.Link
+	dbLinks = links.GetAll()
+	for _, link := range dbLinks {
+		resultLinks = append(resultLinks, &model.Link{ID: link.ID, Title: link.Title, Address: link.Address})
+	}
+	return resultLinks, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
