@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/LEEDASILVA/grapQLServer/go/graph"
-	"github.com/LEEDASILVA/grapQLServer/go/graph/generated"
-	db "github.com/LEEDASILVA/grapQLServer/go/internal/pkg/db/mysql"
+	"github.com/LEEDASILVA/graphQLServer/go/internal/auth"
+
+	"github.com/99designs/gqlgen/handler"
+	hackernews "github.com/LEEDASILVA/graphQLServer/go/graph/generated"
+	db "github.com/LEEDASILVA/graphQLServer/go/internal/pkg/db/mysql"
+	"github.com/gorilla/mux"
 )
 
 const defaultPort = "8080"
@@ -20,15 +21,17 @@ func main() {
 		port = defaultPort
 	}
 
-	// initialise the DB and migrate
+	r := mux.NewRouter()
+
+	r.Use(auth.Middleware())
+
 	db.InitDB()
 	db.Migrate()
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
-
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	server := handler.GraphQL(hackernews.NewExecutableSchema(hackernews.Config{Resolvers: &hackernews.Resolver{}}))
+	r.Handle("/", handler.Playground("GraphQL playground", "/query"))
+	r.Handle("/query", server)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
